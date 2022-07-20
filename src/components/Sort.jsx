@@ -1,12 +1,11 @@
 import React from 'react';
 
-const Sort = ({ value, onClickSort}) => {
+const Sort = ({ sortActiveChange, sortActive, sortBy }) => {
     const [isVisible, setIsVisible] = React.useState(false)
-    const list = ['популярности', 'цене', 'алфавиту']
-    const sortName = list[value]
+    const sortName = sortBy[sortActive].nameRu
 
     const handleList = (index) => {
-        onClickSort(index)
+        sortActiveChange(index)
         setIsVisible(false)
     }
     return (
@@ -30,8 +29,8 @@ const Sort = ({ value, onClickSort}) => {
             {isVisible &&
                 <div className="sort__popup">
                     <ul>
-                        {list.map((item, index) =>
-                            <li onClick={() => handleList(index)} className={value == index ? 'active' : ''} key={index}>{item}</li>
+                        {sortBy.map((item, index) =>
+                            <li onClick={() => handleList(index)} className={sortActive == index ? 'active' : ''} key={index}>{item.nameRu}</li>
                         )}
                     </ul>
                 </div>

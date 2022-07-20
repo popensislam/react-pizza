@@ -4,39 +4,42 @@ import Sort from '../components/Sort'
 import PizzaBlock from '../components/PizzaBlock'
 import Skeleton from '../components/PizzaBlock/Skeleton'
 import { fetchGet } from '../http/pizzaAPI';
+import Pagination from '../components/Pagination';
+import { useSelector, useDispatch } from 'react-redux';
+import { SearchContext } from '../App';
+import { changeActiveCategories, changeActiveSort } from '../store/slices/filterSlice';
+import { getItems } from '../store/slices/itemsSlice';
 
 
-
-const Home = ({ search }) => {
-
-    const [items, setItems] = React.useState([])
+const Home = () => {
+    const { search } = React.useContext(SearchContext)
+    const { sortBy, sortActive, categories, categoryActive } = useSelector(state => state.filter)
+    const { items } = useSelector(state => state.items)
+    const dispatch = useDispatch()
     const [isLoading, setIsLoading] = React.useState(true)
-    const [categoryId, setCategoryId] = React.useState(0)
-    const [sortType, setSortType] = React.useState(0)
+    const [currentPage, setCurrentPage] = React.useState(1)
 
     const order = 'desc'
-    const sortBy = ['rating', 'price', 'title']
-    const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']
-
     React.useEffect(() => {
         setIsLoading(true)
-        fetchGet(sortBy[sortType], order, categoryId)
-            .then(data => setItems(data.data))
+        fetchGet(sortBy[sortActive].nameEn, order, categoryActive, currentPage)
+            .then(data => dispatch(getItems(data.data)))
             .then(() => setIsLoading(false))
         window.scrollTo(0, 0)
-    }, [sortType, categoryId])
+    }, [sortActive, categoryActive, currentPage])
 
     const searchItems = items.filter(item => {
         if (item.title.toLowerCase().includes(search.toLowerCase())) return true
         return false
-    })
-        .map(obj => <PizzaBlock key={obj.id} {...obj} />)
+    }).map(obj => <PizzaBlock key={obj.id} {...obj} />)
+
     const skeleton = [...new Array(6)].map((_, index) => <Skeleton key={index} />)
+
     return (
         <div className="container">
             <div className="content__top">
-                <Categories value={categoryId} onClickCategory={setCategoryId} categories={categories} />
-                <Sort value={sortType} onClickSort={setSortType} />
+                <Categories categoryActive={categoryActive} categoryActiveChange={i => dispatch(changeActiveCategories(i))} categories={categories} />
+                <Sort sortBy={sortBy} sortActiveChange={i => dispatch(changeActiveSort(i))} sortActive={sortActive}/>
             </div>
             <h2 className="content__title">Все пиццы</h2>
             <div className="content__items">
@@ -46,6 +49,7 @@ const Home = ({ search }) => {
                         : searchItems
                 }
             </div>
+            <Pagination changePage={(i) => setCurrentPage(i)} />
         </div>
     );
 }
