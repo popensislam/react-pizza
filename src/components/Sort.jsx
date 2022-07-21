@@ -3,13 +3,28 @@ import React from 'react';
 const Sort = ({ sortActiveChange, sortActive, sortBy }) => {
     const [isVisible, setIsVisible] = React.useState(false)
     const sortName = sortBy[sortActive].nameRu
+    const sortRef = React.useRef()
 
     const handleList = (index) => {
         sortActiveChange(index)
         setIsVisible(false)
     }
+
+    React.useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (!e.path.includes(sortRef.current)) {
+                setIsVisible(false)
+                console.log('click outside')
+            }
+        }
+
+        document.body.addEventListener('click', handleClickOutside)
+
+        return () => document.body.removeEventListener('click', handleClickOutside)
+    }, [])
+
     return (
-        <div className="sort">
+        <div ref={sortRef} className="sort">
             <div className="sort__label">
                 <svg
                     width="10"
