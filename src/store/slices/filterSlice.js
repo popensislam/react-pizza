@@ -15,7 +15,7 @@ const initialState = {
             nameEn: 'title'
         }
     ],
-    sortActive: 1 ,
+    sortActive: 0,
     categories: ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'],
     categoryActive: 0 
 }
@@ -29,7 +29,7 @@ export const filterSlice = createSlice({
         },
         changeActiveCategories(state, action) {
             state.categoryActive = action.payload
-        }
+        },
     }
 })
 
