@@ -17,7 +17,8 @@ const initialState = {
     ],
     sortActive: 0,
     categories: ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'],
-    categoryActive: 0 
+    categoryActive: 0,
+    currentPage: 1
 }
 
 export const filterSlice = createSlice({
@@ -30,9 +31,17 @@ export const filterSlice = createSlice({
         changeActiveCategories(state, action) {
             state.categoryActive = action.payload
         },
+        changeCurrentPage(state, action) {
+            state.currentPage = action.payload  
+        },
+        setFilter(state, action) {
+            state.sortActive = action.payload.sortActive
+            state.categoryActive = action.payload.categoryActive
+            state.currentPage = action.payload.currentPage
+        },
     }
 })
 
-export const { changeActiveSort, changeActiveCategories } = filterSlice.actions
+export const { changeActiveSort, changeActiveCategories, changeCurrentPage, setFilter } = filterSlice.actions
 
 export default filterSlice.reducer
