@@ -1,10 +1,21 @@
 import React from 'react'
 
-const PizzaBlock = ({ title, price, imageUrl, sizes, types }) => {
+const PizzaBlock = ({ id, title, price, imageUrl, sizes, types, addItem }) => {
     const [activeType, setActiveType] = React.useState(0)
     const [activeSize, setActiveSize] = React.useState(0)
-
     const typeNames = ['тонкое', 'традиционное']
+
+    const createItem = () => {
+        const objItem = {
+            id,
+            title,
+            price,
+            imageUrl,
+            size: sizes[activeSize],
+            type: typeNames[activeType]
+        }
+        addItem(objItem)
+    }
 
     return (
         <div className='pizza-block-wrapper'>
@@ -29,7 +40,7 @@ const PizzaBlock = ({ title, price, imageUrl, sizes, types }) => {
                 </div>
                 <div className="pizza-block__bottom">
                     <div className="pizza-block__price">от {price} ₽</div>
-                    <div className="button button--outline button--add">
+                    <div className="button button--outline button--add" onClick={() => createItem()}>
                         <svg
                             width="12"
                             height="12"

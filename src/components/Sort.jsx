@@ -14,7 +14,6 @@ const Sort = ({ sortActiveChange, sortActive, sortBy }) => {
         const handleClickOutside = (e) => {
             if (!e.path.includes(sortRef.current)) {
                 setIsVisible(false)
-                console.log('click outside')
             }
         }
 
