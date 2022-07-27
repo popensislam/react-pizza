@@ -5,15 +5,15 @@ import debounce from 'lodash.debounce';
 
 const Search = () => {
     const { setSearch } = React.useContext(SearchContext)
-    const [ value, setValue ] = React.useState('')
-    const inputRef = React.useRef()
+    const [ value, setValue ] = React.useState<string>('')
+    const inputRef: any = React.useRef<HTMLDivElement>()
 
     const updateSearchValue = React.useCallback(
-        debounce(str => {
+        debounce((str: string) => {
             setSearch(str)
         }, 500), []
     )
-    const onChangeInput = (e) => {
+    const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value)
         updateSearchValue(e.target.value)
     }

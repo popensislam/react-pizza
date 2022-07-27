@@ -1,12 +1,12 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import CartEmpty from '../components/CartItem/CartEmpty';
 import CartFull from '../components/CartItem/CartFull';
+import { selectCart } from '../store/slices/cartSlice';
 
 const Cart = () => {
-    const { cartItems, totalPizzas, totalPrice } = useSelector(state => state.cart)
-    const dispatch = useDispatch()
-    const isCartItems = cartItems.length
+    const { cartItems, totalPizzas, totalPrice } = useSelector(selectCart)
+    const isCartItems: number = cartItems.length
     return (
         <div className="container container--cart">
             {

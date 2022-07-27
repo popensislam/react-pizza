@@ -1,7 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { RootState } from ".."
 
 
-const initialState = {
+interface CartState {
+    cartItems: any[],
+    totalPrice: number,
+    totalPizzas: number
+}
+const initialState: CartState = {
     cartItems: [],
     totalPrice: 0,
     totalPizzas: 0
@@ -11,7 +17,7 @@ export const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
-        addItemToCard(state, action) {
+        addItemToCard(state, action: PayloadAction<any>) {
             const selectedItem = action.payload
             const cart = state.cartItems
             const foundItem = cart.find(item => {
@@ -26,7 +32,7 @@ export const cartSlice = createSlice({
             state.totalPrice += selectedItem.price
             state.totalPizzas++
         },
-        plusItem(state, action) {
+        plusItem(state, action: PayloadAction<any[]>) {
             const foundItemToDel = state.cartItems.find(item => item.idToDel == action.payload)
 
             foundItemToDel.count++
@@ -34,7 +40,7 @@ export const cartSlice = createSlice({
             state.totalPrice += foundItemToDel.price
             state.totalPizzas++
         },
-        minusItem(state, action) {
+        minusItem(state, action: PayloadAction<any[]>) {
             const foundItemToDel = state.cartItems.find(item => item.idToDel == action.payload)
             console.log(foundItemToDel.count)
             if (foundItemToDel.count != 1) {
@@ -49,7 +55,7 @@ export const cartSlice = createSlice({
             state.totalPizzas--
             state.cartItems = cart
         },
-        clearByOne(state, action) {
+        clearByOne(state, action: PayloadAction<any[]>) {
             const cart = state.cartItems.find(item => item.idToDel == action.payload)
             console.log(cart.totalOnePrice, cart.count)
             state.totalPrice = state.totalPrice - cart.totalOnePrice
@@ -64,6 +70,8 @@ export const cartSlice = createSlice({
         }
     }
 })
+
+export const selectCart = (state: RootState) => state.cart
 
 export const { addItemToCard, plusItem, minusItem, clearBasket, clearByOne } = cartSlice.actions
 export default cartSlice.reducer

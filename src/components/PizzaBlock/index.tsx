@@ -1,9 +1,19 @@
 import React from 'react'
 
-const PizzaBlock = ({ id, title, price, imageUrl, sizes, types, addItem }) => {
-    const [activeType, setActiveType] = React.useState(0)
-    const [activeSize, setActiveSize] = React.useState(0)
-    const typeNames = ['тонкое', 'традиционное']
+interface PizzaProps {
+    id: number, 
+    title: string,
+    price: number,
+    imageUrl: string,
+    sizes: number[],
+    types: number[],
+    addItem: (i: {}) => void
+}
+
+const PizzaBlock: React.FC<PizzaProps> = ({ id, title, price, imageUrl, sizes, types, addItem }) => {
+    const [activeType, setActiveType] = React.useState<number>(0)
+    const [activeSize, setActiveSize] = React.useState<number>(0)
+    const typeNames: string[] = ['тонкое', 'традиционное']
 
     const createItem = () => {
         const objItem = {
@@ -28,12 +38,12 @@ const PizzaBlock = ({ id, title, price, imageUrl, sizes, types, addItem }) => {
                 <h4 className="pizza-block__title">{title}</h4>
                 <div className="pizza-block__selector">
                     <ul>
-                        {types.map(typeId =>
+                        {types.map((typeId: number) =>
                             <li onClick={() => setActiveType(typeId)} className={activeType == typeId ? 'active' : ''} key={typeId}>{typeNames[typeId]}</li>
                         )}
                     </ul>
                     <ul>
-                        {sizes.map((item, index) =>
+                        {sizes.map((item: number, index: number) =>
                             <li onClick={() => setActiveSize(index)} className={activeSize == index ? 'active' : ''} key={index}>{item} см.</li>
                         )}
                     </ul>

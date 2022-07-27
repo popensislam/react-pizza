@@ -1,11 +1,18 @@
-import { useDispatch } from 'react-redux';
+import { useWhyDidYouUpdate } from 'ahooks';
 import { Link } from 'react-router-dom'
 import CartItem from '.';
+import { useAppDispatch } from '../../hooks/hooks';
 import { clearBasket } from '../../store/slices/cartSlice';
 
+interface CartFullProps {
+    cartItems: any[],
+    totalPizzas: number,
+    totalPrice: number
+}
 
-const CartFull = ({ cartItems, totalPizzas, totalPrice }) => {
-    const dispatch = useDispatch()
+const CartFull: React.FC<CartFullProps> = ({ cartItems, totalPizzas, totalPrice }) => {
+    const dispatch = useAppDispatch()
+    useWhyDidYouUpdate('CartFull', { cartItems, totalPizzas, totalPrice })
     return (
         <div className="cart">
             <div className="cart__top">

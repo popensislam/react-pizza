@@ -1,26 +1,39 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import axios from "axios"
+import { RootState } from ".."
 
-export const fetchPizza = createAsyncThunk('items/fetchPizza', async (param) => {
+type FetchPizzaType = {
+    currentPage: number,
+    sortBy: string,
+    order: string,
+    categoryActive: number,
+}
+
+export const fetchPizza = createAsyncThunk('items/fetchPizza', async (param: FetchPizzaType) => {
     const data = await axios.get(`https://62d668c515ad24cbf2d694b3.mockapi.io/items?page=${param.currentPage}&limit=4&sortBy=${param.sortBy}&order=${param.order}&category=${param.categoryActive > 0 ? param.categoryActive : ''}`)
     return data.data
 })
 
-const initialState = {
+interface ItemsState {
+    items: {}[],
+    status: string
+}
+
+const initialState: ItemsState = {
     items: [],
-    status: 'pending'
+    status: 'pending',
 }
 
 export const itemsSlice = createSlice({
     name: 'items',
     initialState,
     reducers: {
-        getItems(state, action) {
+        getItems(state, action: PayloadAction<[]>) {
             state.items = action.payload
-        }
+        },
     },
     extraReducers: (builder) => {
-        builder.addCase(fetchPizza.pending, (state, action) => {
+        builder.addCase(fetchPizza.pending, (state) => {
             state.status = 'pending';
             state.items = [];
         });
@@ -37,5 +50,6 @@ export const itemsSlice = createSlice({
     }
 })
 
+export const selectItems = (state: RootState) => state.items
 export const { getItems } = itemsSlice.actions
 export default itemsSlice.reducer

@@ -1,8 +1,19 @@
 import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../../hooks/hooks";
 import { plusItem, minusItem, clearByOne } from "../../store/slices/cartSlice";
 
-const CartItem = ({ title, imageUrl, size, type, count, totalOnePrice, idToDel }) => {
-    const dispatch = useDispatch()
+interface CartitemsProps {
+    title: string,
+    imageUrl: string,
+    size: number,
+    type: string,
+    count: number, 
+    totalOnePrice: number,
+    idToDel: any
+}
+
+const CartItem: React.FC<CartitemsProps> = ({ title, imageUrl, size, type, count, totalOnePrice, idToDel }) => {
+    const dispatch = useAppDispatch()
     return (
         <div className="cart__item">
             <div className="cart__item-img">

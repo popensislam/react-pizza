@@ -1,17 +1,23 @@
 import React from 'react';
 
-const Sort = ({ sortActiveChange, sortActive, sortBy }) => {
-    const [isVisible, setIsVisible] = React.useState(false)
-    const sortName = sortBy[sortActive].nameRu
-    const sortRef = React.useRef()
+interface SortProps {
+    sortActiveChange: (i: number) => void, 
+    sortActive: number,
+    sortBy: any[]
+}
 
-    const handleList = (index) => {
+const Sort: React.FC<SortProps> = React.memo(({ sortActiveChange, sortActive, sortBy }) => {
+    const [isVisible, setIsVisible] = React.useState<boolean>(false)
+    const sortName = sortBy[sortActive].nameRu
+    const sortRef: any = React.useRef<HTMLDivElement>()
+
+    const handleList = (index: number) => {
         sortActiveChange(index)
         setIsVisible(false)
     }
 
     React.useEffect(() => {
-        const handleClickOutside = (e) => {
+        const handleClickOutside = (e: any) => {
             if (!e.path.includes(sortRef.current)) {
                 setIsVisible(false)
             }
@@ -51,6 +57,6 @@ const Sort = ({ sortActiveChange, sortActive, sortBy }) => {
             }
         </div>
     );
-}
+})
 
 export default Sort;
